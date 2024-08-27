@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topics</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<body>
+    <div class="topnav">
+        <a href="/">Users</a>
+        <a href="/skill">Skills</a>
+        <a class="active" href="/topic">Topics</a>
+        <a href="/lesson">Lessons</a>
+        <a href="/voiceQuiz">Voice Quizs</a>
+        <a href="/multipleChoiceQuiz">Multiple Choice Quizs</a>
+        <a href="/descriptionQuiz">Description Quizs</a>
+        <a href="/lettersIntoWordsQuiz">Letters Into Words Quizs</a>
+    </div>
+    <div class="filter-bar">
+        <input id="search-input" type="text" placeholder="Search...">
+        <select id="filter-select">
+            <option value="All">All</option>
+            <option value="Listening">Listening</option>
+            <option value="Speaking">Speaking</option>
+            <option value="Reading">Reading</option>
+            <option value="Writing">Writing</option>
+        </select>
+        <button onclick="filterTopics()">Filter</button>
+    </div>
+
+    <div>
+        <a class="btnCreate" href="/create-topic">Create A New Topic</a>
+    </div>
+
+    <div class="table-container">
+        <table id="topics-table">
+            <thead>
+                <tr>
+                    <th style="width: 70px;">ID</th>
+                    <th>Name</th>
+                    <th style="width: 300px; text-align: center;">Photo</th>
+                    <th style="text-align: center;">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="topics-body">
+                <div class="table-container">
+                    <% listTopics.forEach(function(topic, index) { %>
+                        <tr>
+                            <td style="width: 70px;">
+                                <%= topic.id %>
+                            </td>
+                            <td>
+                                <%= topic.name %>
+                            </td>
+                            <td style="width: 300px; text-align: center;">
+                                <img src="/images/topics/<%= topic.photo %>" alt="photo" width="100" height="100"
+                                    style="border:2px solid black">
+                            </td>
+                            <td style="width: 300px">
+                                <div class="container_btn">
+                                    <!-- <div class="btn">
+                                        <a class="btnEdit" href="/update-topic/<%= topic.id %>">Edit</a>
+                                    </div>
+                                    <div class="btn">
+                                        <button class="btnDelete" data-id="<%= topic.id %>">Delete</button>
+                                    </div> -->
+                                    <div class="btn">
+                                        <button class="btnChangeSkill" data-id="<%= topic.id %>"
+                                            data-name="<%= topic.name %>">Change Skill</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <% }); %>
+                </div>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="changeSkillModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 style="padding-bottom: 25px; color: rgb(63, 212, 235);">Change Skill</h2>
+            <form id="changeSkillForm">
+                <!-- Danh sách các skill -->
+                <label><input type="checkbox" name="skills" value="Listening">Listening</label><br>
+                <label><input type="checkbox" name="skills" value="Speaking">Speaking</label><br>
+                <label><input type="checkbox" name="skills" value="Reading">Reading</label><br>
+                <label><input type="checkbox" name="skills" value="Writing">Writing</label><br>
+                <!-- Input ẩn để chứa id của topic -->
+                <input type="hidden" id="topicId" name="topicId">
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+    </div>
+
+
+    <script>
+        // Khai báo biến global để lưu trữ chỉ số của option được chọn tức là skill_id
+        var selectedIndex;
+        var selectedCategory;
+        // Function để lấy chỉ số của option được chọn
+        // function getSelectedIndex() {
+        //     var selectElement = document.getElementById('filter-select');
+        //     selectedIndex = selectElement.selectedIndex;
+        // }
+        // Lấy lại chỉ số của option được chọn trước khi thực hiện filter
+        // getSelectedIndex();
+        // Xử lý sự kiện khi select box thay đổi
+        // document.getElementById('filter-select').addEventListener('change', getSelectedIndex);
+        //
+        function filterTopics() {
+            // Xác định ô input search
+            var input = document.getElementById("search-input");
+            // Xóa giá trị hiện tại trong ô input
+            input.value = "";
+            //
+            var selectElement = document.getElementById('filter-select');
+            selectedIndex = selectElement.selectedIndex;
+            //alert('Skill_id: ' + selectedIndex);
+            selectedCategory = selectElement.options[selectElement.selectedIndex].value;
+            var url;
+            if (selectedCategory === 'All') {
+                url = '/topicJson';
+                //alert('url:' + url);
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        // alert('data:' + JSON.stringify(data)); // Log the received data
+                        // Clear existing
+                        var thead = document.getElementById('topics-table').getElementsByTagName('thead')[0];
+                        thead.innerHTML = '';
+                        // Clear existing rows
+                        var tbody = document.getElementById('topics-body');
+                        tbody.innerHTML = '';
+                        // Add table header first
+                        thead.innerHTML = ` <tr>
+                                                <th style="width: 70px;">ID</th>
+                                                <th>Name</th>
+                                                <th style="width: 300px; text-align: center;">Photo</th>
+                                                <th style="text-align: center;">Actions</th>
+                                            </tr> `;
+
+                        // Append new rows
+                        data.listTopics.forEach(topic => {
+                            var tr = document.createElement('tr');
+                            tr.innerHTML = `<td style="width: 70px;">${topic.id}</td>
+                                            <td>${topic.name}</td>
+                                            <td style="width: 300px; text-align: center;"><img src="/images/topics/${topic.photo}" alt="photo" width="100" height="100" style="border:2px solid black"></td>
+                                            <td style="width: 300px">
+                                                <div class="container_btn" >
+                                                    <div class="btn">
+                                                        <button class="btnChangeSkill" data-id="${topic.id}" data-name="${topic.name}">Change Skill</button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            `;
+                            tbody.appendChild(tr);
+                        });
+                    })
+                    .catch(error => console.error('Error fetching topics:', error));
+            } else {
+                url = '/topic' + selectedCategory; // Update the URL with the selected category
+                //alert('url:' + url);
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        // alert('data:' + JSON.stringify(data)); // Log the received data
+                        // Clear existing
+                        var thead = document.getElementById('topics-table').getElementsByTagName('thead')[0];
+                        thead.innerHTML = '';
+                        // Clear existing rows
+                        var tbody = document.getElementById('topics-body');
+                        tbody.innerHTML = '';
+                        // Add table header first
+                        thead.innerHTML = ` <tr>
+                                                <th style="width: 70px;">ID</th>
+                                                <th>Name</th>
+                                                <th style="width: 300px; text-align: center;">Photo</th>
+                                                <th style="text-align: center;">Actions</th>
+                                            </tr> `;
+                        // Append new rows
+                        data.listTopics.forEach(topic => {
+                            var tr = document.createElement('tr');
+                            tr.innerHTML = `<td style="width: 70px;">${topic.id}</td>
+                                            <td>${topic.name}</td>
+                                            <td style="width: 300px; text-align: center;"><img src="/images/topics/${topic.photo}" alt="photo" width="100" height="100" style="border:2px solid black"></td>
+                                            <td style="width: 300px">
+                                                <div class="container_btn" >
+                                                    <div class="btn">
+                                                        <a class="btnEdit" href="/update-topic/${topic.id}">Edit</a>
+                                                    </div>
+                                                    <div class="btn">
+                                                        <button class="btnDelete" data-id="${topic.id}" data-name="${topic.name}">Delete</button>
+                                                    </div>
+                                                </div>
+                                            </td>`;
+                            tbody.appendChild(tr);
+                        });
+                    })
+                    .catch(error => console.error('Error fetching topics:', error));
+            }
+
+        }
+        // search
+        // Function to filter topics based on search input
+        function filterTopicsByName() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("search-input");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("topics-table");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[1]; // Index 1 is for the Name column
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    //alert(txtValue.toUpperCase() + td.textContent + td.innerText);
+                    //alert(tr[i].getAttribute('data-name'));
+                    //  && tr[i].getAttribute('data-name') === selectedCategory
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    }
+                    else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+
+        // Add event listener to the search input
+        document.getElementById("search-input").addEventListener("keyup", filterTopicsByName);
+
+
+        // delete item
+        // $(document).ready(function () {
+        //     $(".btnDelete").click(function () {
+        //         const id = $(this).attr('data-id');
+        //         if (confirm(`Are you sure to DELETE this TOPIC with ID = ${id}`)) {
+        //             $.ajax({
+        //                 url: `${window.location.origin}/api/delete-topic/${id}`,
+        //                 method: "DELETE",
+        //                 success: (result) => {
+        //                     console.log(result);
+        //                     $(this).closest("tr").remove();
+        //                 },
+        //                 error: function (error) {
+        //                     alert(`Could not DELETE TOPIC with ID = ${id}`);
+        //                 }
+        //             });
+        //         } else {
+        //             // Do nothing!
+        //         }
+        //     });
+        // });
+
+        // $(document).ready(function () {
+        //     // Sử dụng event delegation cho nút delete
+        //     $(document).off('click').on("click", ".btnDelete", function () {
+        //         const id = $(this).attr('data-id');
+        //         const name = $(this).attr('data-name');
+        //         if (confirm(`Are you sure to DELETE this TOPIC with ID: ${id}, Name: ${name}, SKILL: ${selectedCategory}`)) {
+        //             $.ajax({
+        //                 url: `${window.location.origin}/api/delete-topic/${id}/${selectedIndex}`,
+        //                 method: "DELETE",
+        //                 success: (result) => {
+        //                     console.log(result);
+        //                     $(this).closest("tr").remove(); // Xóa dòng từ bảng HTML
+        //                 },
+        //                 error: function (error) {
+        //                     alert(`Could not DELETE TOPIC with ID = ${id}`);
+        //                 }
+        //             });
+        //         } else {
+        //             // Do nothing!
+        //         }
+        //     });
+        // });
+
+        $(document).ready(function () {
+            document.addEventListener('click', function (event) {
+                if (event.target.matches('.btnDelete')) {
+                    const id = $(event.target).attr('data-id');
+                    const name = $(event.target).attr('data-name');
+                    if (confirm(`Are you sure to DELETE this TOPIC with ID: ${id}, Name: ${name}, SKILL: ${selectedCategory}`)) {
+                        $.ajax({
+                            url: `${window.location.origin}/api/delete-topic-fromSKILL_TOPIC/${id}/${selectedIndex}`,
+                            method: "DELETE",
+                            success: (result) => {
+                                console.log(result);
+                                $(event.target).closest("tr").remove();
+                                alert(`Đã xóa ${name} ra khỏi ${selectedCategory}`);
+                            },
+                            error: function (error) {
+                                alert(`Không thể xóa ${name} ra khỏi ${selectedCategory} vì đã tồn tại bài học`);
+                            }
+                        });
+                    } else {
+                        // Do nothing!
+                    }
+                }
+            });
+        });
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // chang skill 
+        // Mở modal khi nhấn nút Change Skill
+        // $(document).on('click', '.btnChangeSkill', function () {
+        //     var topicId = $(this).data('id');
+        //     $('#topicId').val(topicId); // Đặt giá trị id của topic vào input ẩn trong modal
+        //     $('#changeSkillModal').css('display', 'block'); // Mở modal
+        // });
+
+
+
+        // // Xử lý khi form được submit
+        // $('#changeSkillForm').submit(function (event) {
+        //     event.preventDefault(); // Ngăn chặn form gửi đi và load lại trang
+        //     var formData = $(this).serialize(); // Lấy dữ liệu từ form
+        //     alert(formData)
+        //     $.ajax({
+        //         url: '/api/change-skill', // Đường dẫn của API để thay đổi skill
+        //         method: 'POST',
+        //         data: formData, // Dữ liệu gửi đi (bao gồm id của topic và skill mới)
+        //         success: function (response) {
+        //             console.log(response); // Log response từ server
+        //             $('#changeSkillModal').css('display', 'none'); // Đóng modal sau khi hoàn tất
+        //             // Cập nhật giao diện nếu cần
+        //         },
+        //         error: function (error) {
+        //             console.error('Error:', error); // Log lỗi nếu có
+        //             // Xử lý lỗi nếu cần
+        //         }
+        //     });
+        // });
+        // Đóng modal khi nhấn nút đóng
+        $('.close').on('click', function () {
+            $('#changeSkillModal input[type="checkbox"]').prop('checked', false);
+            $('#changeSkillModal').css('display', 'none');
+            //location.reload();
+            window.location.reload(true);
+        });
+        // // Đóng modal khi nhấn nút đóng hoặc click bên ngoài modal
+        // $(document).on('click', '.close, .modal', function (event) {
+        //     if ($(event.target).hasClass('modal') || $(event.target).hasClass('close')) {
+        //         // Xóa thuộc tính checked của tất cả các checkbox trong modal
+        //         $('#changeSkillModal input[type="checkbox"]').prop('checked', false);
+        //         $('#changeSkillModal').css('display', 'none');
+        //         location.reload();
+        //     }
+        // });
+        let skillListOld = [];
+        let skillIdExistinLesson = [];
+        function addObject(element) {
+            if (!skillIdExistinLesson.includes(element)) {
+                skillIdExistinLesson.push(element);
+                // hoặc myObject[element] = 1; nếu bạn muốn theo dõi số lần xuất hiện
+            }
+        }
+        // Mở modal khi nhấn nút Change Skill
+        $(document).on('click', '.btnChangeSkill', function () {
+            var topicId = $(this).data('id');
+            $('#topicId').val(topicId); // Đặt giá trị id của topic vào input ẩn trong modal
+            // Gửi yêu cầu AJAX để lấy danh sách các kỹ năng hiện có của topic
+            $.ajax({
+                url: '/api/getAllLessonsOfTopcId/' + topicId,
+                method: 'GET',
+                success: function (response) {
+                    console.log(response);
+                    //alert(JSON.stringify(response));
+                    // Duyệt qua danh sách các bài học
+                    response.data.forEach(function (lesson) {
+                        addObject(lesson.skill_id);
+                    });
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                }
+            });
+            setTimeout(function () {
+                // Đoạn mã bạn muốn thực thi sau khi độ trễ
+                $.ajax({
+                    url: '/api/skills/' + topicId,
+                    method: 'GET',
+                    success: function (response) {
+                        console.log(response);
+                        // Duyệt qua danh sách kỹ năng và đặt checked cho các checkbox tương ứng
+                        response.data.forEach(function (skill) {
+                            let checkbox = $('input[type="checkbox"][value="' + skill.name + '"]');
+                            checkbox.prop('checked', true);
+                            // Kiểm tra xem skill.id có tồn tại trong let skillIdExistinLesson không
+                            if (skillIdExistinLesson.includes(skill.id)) {
+                                checkbox.prop('disabled', true); // disabled checkbox nếu skill.id tồn tại
+                            } else {
+                                skillListOld.push(skill);
+                            }
+                        });
+                        console.log(skillListOld);
+                    },
+                    error: function (error) {
+                        console.error('Error:', error);
+                    }
+                });
+            }, 200);
+            $('#changeSkillModal').css('display', 'block'); // Mở modal
+        });
+
+
+        // Xử lý khi form được submit
+        $('#changeSkillForm').submit(function (event) {
+            event.preventDefault(); // Ngăn chặn form gửi đi và load lại trang
+            var formData = $(this).serialize(); // Lấy dữ liệu từ form
+            // Thêm danh sách kỹ năng cũ vào formData
+            formData += '&skillListOld=' + JSON.stringify(skillListOld);
+            //alert(formData)
+            $.ajax({
+                url: '/api/update-ChangeSkill', // Đường dẫn của API để thay đổi skill
+                method: 'PUT',
+                data: formData, // Dữ liệu gửi đi (bao gồm id của topic và skill mới)
+                success: function (response) {
+                    console.log(response); // Log response từ server
+                    $('#changeSkillModal').css('display', 'none'); // Đóng modal sau khi hoàn tất
+                    // Cập nhật giao diện nếu cần
+                    //location.reload();
+                    window.location.reload(true);
+                },
+                error: function (error) {
+                    console.error('Error:', error); // Log lỗi nếu có
+                    // Xử lý lỗi nếu cần
+                    //location.reload();
+                    window.location.reload(true);
+                }
+            });
+            window.location.reload(true);
+            //location.reload();
+        });
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+
+</body>
+
+</html>

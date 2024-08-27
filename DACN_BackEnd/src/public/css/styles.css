@@ -1,0 +1,617 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.photolu {
+    width: 300px;
+    border-radius: 40%;
+}
+
+/* Add a black background color to the top navigation */
+.topnav {
+    background-color: #333;
+    overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+    background-color: #04AA6D;
+    color: white;
+}
+
+/* Add a black background color to the top navigation */
+.topTabs {
+    margin-top: 10px;
+    margin-left: 15px;
+    width: fit-content;
+    background-color: #5b5c5b;
+    overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.topTabs a {
+    float: left;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topTabs a:hover {
+    background-color: #aeb4b1;
+    color: black;
+}
+
+/* Add a color to the active/current link */
+.topTabs a.active {
+    background-color: #49c767;
+    color: white;
+}
+
+.form-add-new {
+    width: 400px;
+    margin: 0 auto;
+    padding-top: 100px;
+}
+
+.input-group {
+    padding: 10px;
+}
+
+.input-group-selectAll {
+    margin-left: 56px;
+    margin-bottom: 8px;
+}
+
+.checkbox-group {
+    display: inline-block;
+    margin-left: 7px;
+}
+
+.skill-group {
+    width: 100%;
+}
+
+.btnSave {
+    cursor: pointer;
+}
+
+/* block id */
+.d-none {
+    display: none;
+}
+
+/* table */
+.table-container {
+    padding-left: 35px;
+    padding-right: 35px;
+    padding-bottom: 50px;
+    width: 100%-80px;
+    overflow-x: auto;
+    /* Tránh việc bảng quá rộng */
+}
+
+.title {
+    font-size: 25px;
+    font-weight: 600;
+    padding-bottom: 10px;
+}
+
+th {
+    background-color: #f2f2f2;
+    /* Màu nền của header */
+}
+
+table {
+    border-collapse: collapse;
+    /* Loại bỏ khoảng trắng giữa các ô */
+    width: 100%;
+}
+
+th,
+td {
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+tr:hover {
+    background-color: #ccc;
+}
+
+.btnCreate {
+    width: fit-content;
+    display: block;
+    margin: 20px 35px;
+    text-decoration: none;
+    padding: 10px;
+    background-color: rgb(125, 241, 206);
+    border-color: rgb(125, 241, 206);
+}
+
+
+/**/
+
+.filter-bar {
+    background-color: #f0f0f0;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.filter-bar input[type="text"],
+.filter-bar select {
+    margin-right: 10px;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.filter-bar button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Style for the filter button on hover */
+.filter-bar button:hover {
+    background-color: #0056b3;
+}
+
+/* Style for the filter button on focus */
+.filter-bar button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5);
+}
+
+/* .container_btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: normal;
+}
+
+.container_btn .btn {
+    flex: 1;
+    margin: 0 5px;
+    text-align: center;
+} */
+
+/* .container_btn .btn a {
+    padding: 1px 15px 14px;
+    border: none;
+    outline: none;
+    margin-top: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 4px;
+} */
+/* .container_btn .btn a,
+.container_btn .btn button {
+    padding: 8px 12px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 4px;
+}
+
+.container_btn .btn a.btnEdit {
+    background-color: #007bff;
+}
+
+.container_btn .btn button.btnDelete {
+    background-color: #dc3545;
+}
+
+.container_btn .btn button.btnChangeSkill {
+    background-color: #28a745;
+} */
+
+/* .container_btn {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.container_btn .btn {
+    flex: 1;
+    margin: 0 5px;
+    text-align: center;
+}
+
+.container_btn .btn a {
+    width: 40px;
+    padding: 8px 12px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 4px;
+    display: block;
+}
+
+.container_btn .btn button {
+    padding: 8px 12px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 4px;
+    display: block;
+}
+
+.container_btn .btn a.btnEdit {
+    background-color: #007bff;
+}
+
+.container_btn .btn button.btnDelete {
+    background-color: #dc3545;
+}
+
+.container_btn .btn button.btnChangeSkill {
+    background-color: #28a745;
+} */
+
+.container_btn {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 300px;
+}
+
+.container_btn .btn {
+    margin: 0 5px;
+    text-align: center;
+}
+
+.container_btn .btn a,
+.container_btn .btn button {
+    padding: 8px 12px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.container_btn .btn a.btnEdit {
+    background-color: #007bff;
+}
+
+.container_btn .btn button.btnDelete {
+    background-color: #dc3545;
+}
+
+.container_btn .btn button.btnChangeSkill {
+    background-color: #28a745;
+}
+
+
+/* dialog change skill */
+/* Định dạng modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Định dạng nội dung trong modal */
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    /* Hiển thị modal ở giữa trang */
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Đổ bóng cho modal */
+    max-width: 350px;
+    /* Giới hạn chiều rộng của modal */
+}
+
+/* .modal-content>* {
+    margin-bottom: 25px;
+} */
+
+/* Định dạng các phần tử của form */
+#changeSkillForm label {
+    display: block;
+    /* Hiển thị mỗi label trên một dòng */
+    margin-bottom: 1px;
+    /* Khoảng cách giữa các label */
+}
+
+/* Định dạng nút Submit */
+#changeSkillForm input[type="submit"] {
+    display: block;
+    /* Hiển thị nút Submit trên một dòng riêng biệt */
+    /* margin-top: 20px; */
+    /* Khoảng cách giữa nút Submit và các label */
+    margin-left: auto;
+    /* Đặt margin-left là auto để nút hiển thị ở bên phải */
+    padding: 10px 20px;
+    /* Đặt padding cho nút */
+    font-size: 16px;
+    /* Đặt kích thước font cho nút */
+    background-color: #007bff;
+    /* Màu nền cho nút */
+    color: #fff;
+    /* Màu chữ cho nút */
+    border: none;
+    /* Loại bỏ viền */
+    border-radius: 5px;
+    /* Định dạng viền cong cho nút */
+    cursor: pointer;
+    /* Biến con trỏ thành dấu nhấn khi rê chuột vào nút */
+    transition: background-color 0.3s;
+    /* Hiệu ứng chuyển đổi màu nền khi hover */
+}
+
+/* Hiệu ứng hover cho nút Submit */
+#changeSkillForm input[type="submit"]:hover {
+    background-color: #0056b3;
+    /* Màu nền khi hover */
+}
+
+/* Định dạng nút đóng modal */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    margin-top: -5px;
+    margin-right: 1px;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Hiệu ứng khi hover vào nút đóng */
+.close:hover {
+    transform: scale(1.1);
+    /* Phóng to nút khi hover */
+}
+
+/* Animation cho modal */
+@keyframes modalFade {
+    from {
+        opacity: 0;
+    }
+
+    /* Modal bắt đầu ẩn */
+    to {
+        opacity: 1;
+    }
+
+    /* Modal hiển thị hoàn toàn */
+}
+
+/* Hiệu ứng fade khi hiển thị modal */
+.modal {
+    animation: modalFade 0.3s;
+}
+
+/* định dạng cho nút import */
+.import-btn-data {
+    display: inline-block;
+    margin-top: 30px;
+    margin-left: 35px;
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.import-btn-data:hover {
+    background-color: #45a049;
+}
+
+.import-btn-for-lesson {
+    display: inline-block;
+    margin-top: 30px;
+    margin-left: 35px;
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.import-btn-for-lesson:hover {
+    background-color: #45a049;
+}
+
+/* Tooltip container */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: auto;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    top: 5px;
+    /* Điều chỉnh top để tooltip xuất hiện bên trên */
+    left: 50%;
+    margin-left: 60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* tooltip hình VoiceQuiz */
+.tooltip-imageVoiceQuiz .tooltiptext {
+    visibility: hidden;
+    width: 230px;
+    height: 135px;
+    background-image: url('../images/quizs/VoiceQuic.png');
+    /* Đường dẫn đến hình ảnh */
+    background-size: cover;
+    /* Đảm bảo hình ảnh được hiển thị đầy đủ trong tooltip */
+    border-radius: 6px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: 0px;
+    /* Kích thước tooltip nên là nửa chiều rộng của hình ảnh */
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+/* tooltip hình MultipleQuiz */
+.tooltip-imageMultipleQuiz .tooltiptext {
+    visibility: hidden;
+    width: 550px;
+    height: 158px;
+    background-image: url('../images/quizs/MultipleChoiceQuiz.png');
+    /* Đường dẫn đến hình ảnh */
+    background-size: cover;
+    /* Đảm bảo hình ảnh được hiển thị đầy đủ trong tooltip */
+    border-radius: 6px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: 0px;
+    /* Kích thước tooltip nên là nửa chiều rộng của hình ảnh */
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+/* tooltip hình DescriptionQuiz */
+.tooltip-imageDescriptionQuiz .tooltiptext {
+    visibility: hidden;
+    width: 870px;
+    height: 265px;
+    background-image: url('../images/quizs/DescriptionQuiz.png');
+    /* Đường dẫn đến hình ảnh */
+    background-size: cover;
+    /* Đảm bảo hình ảnh được hiển thị đầy đủ trong tooltip */
+    border-radius: 6px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: 0px;
+    /* Kích thước tooltip nên là nửa chiều rộng của hình ảnh */
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+/* tooltip hình LettersIntoWordsQuiz */
+.tooltip-imageLettersIntoWordsQuiz .tooltiptext {
+    visibility: hidden;
+    width: 265px;
+    height: 176px;
+    background-image: url('../images/quizs/LettersIntoWordsQuiz.p.png');
+    /* Đường dẫn đến hình ảnh */
+    background-size: cover;
+    /* Đảm bảo hình ảnh được hiển thị đầy đủ trong tooltip */
+    border-radius: 6px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: 0px;
+    /* Kích thước tooltip nên là nửa chiều rộng của hình ảnh */
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+
+/* Định dạng nút Submit */
+.btn-imporrt {
+    display: block;
+    /* Hiển thị nút Submit trên một dòng riêng biệt */
+    /* margin-top: 20px; */
+    /* Khoảng cách giữa nút Submit và các label */
+    margin-left: auto;
+    /* Đặt margin-left là auto để nút hiển thị ở bên phải */
+    padding: 10px 20px;
+    /* Đặt padding cho nút */
+    font-size: 16px;
+    /* Đặt kích thước font cho nút */
+    background-color: #007bff;
+    /* Màu nền cho nút */
+    color: #fff;
+    /* Màu chữ cho nút */
+    border: none;
+    /* Loại bỏ viền */
+    border-radius: 5px;
+    /* Định dạng viền cong cho nút */
+    cursor: pointer;
+    /* Biến con trỏ thành dấu nhấn khi rê chuột vào nút */
+    transition: background-color 0.3s;
+    /* Hiệu ứng chuyển đổi màu nền khi hover */
+}
+
+/* Hiệu ứng hover cho nút Submit */
+.btn-imporrt :hover {
+    background-color: #0056b3;
+    /* Màu nền khi hover */
+}

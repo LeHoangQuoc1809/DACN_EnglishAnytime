@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create A Lesson</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<body>
+    <div class="topnav">
+        <a href="/">Users</a>
+        <a href="/skill">Skills</a>
+        <a href="/topic">Topics</a>
+        <a class="active" href="/lesson">Lessons</a>
+        <a href="/voiceQuiz">Voice Quizs</a>
+        <a href="/multipleChoiceQuiz">Multiple Choice Quizs</a>
+        <a href="/descriptionQuiz">Description Quizs</a>
+        <a href="/lettersIntoWordsQuiz">Letters Into Words Quizs</a>
+    </div>
+    <div class="form-add-new">
+        <form id="lessonForm" action="/create-lesson" method="POST">
+            <fieldset>
+                <legend>Create Lesson</legend>
+                <div class="input-group">
+                    <label>Name: </label>
+                    <input id="name" style="width: 196px;" type="text" name="name" />
+                </div>
+                <div class="input-group">
+                    <label>Skill: </label>
+                    <select style="margin: 8px; width: 200px;" name="skill_name" id="skillSelect">
+                        <% listSkills.forEach(function(skill, index) { %>
+                            <option>
+                                <%= skill.name %>
+                            </option>
+                            <% }); %>
+                    </select>
+                </div>
+                <!-- Select chủ đề -->
+                <div class="input-group" id="topicGroup" style="display: none;">
+                    <label>Topic: </label>
+                    <select id="topicSelect" style="margin: 2px; width: 200px;" name="topic_id">
+                        <!-- Các option sẽ được thêm vào đây bằng JavaScript -->
+                    </select>
+                </div>
+                <div class="input-group">
+                    <button style="height: 30px; width: 50px; margin-left: 43%;" class=" btnSave">Save</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $(".btnSave").click(function () {
+                var name = $("#name").val().trim();
+                // Kiểm tra xem các trường có giá trị không
+                if (!name || name === '') {
+                    // Hiển thị cảnh báo nếu có trường trống
+                    alert("Hãy điền đầy đủ thông tin");
+                    return false; // Ngăn form gửi đi nếu có trường trống
+                } else {
+                    // Gửi form đi nếu các trường đã được điền đầy đủ
+                    $("#lessonForm").submit();
+                }
+            });
+        });
+        // document.getElementById('skillSelect').addEventListener('change', function () {
+        //     var selectedSkill = this.selectedIndex + 1; // Lấy giá trị được chọn từ select
+        //     // Gửi giá trị đã chọn đến API
+        //     // alert(selectedSkill);
+        //     fetch(`/api/topics/${selectedSkill}`)
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             // Xử lý dữ liệu trả về từ API
+        //             if (data.message === 'OK') {
+        //                 var topics = data.data;
+        //                 // Xóa tất cả các option hiện tại trong select
+        //                 var select = document.getElementById('topicSelect');
+        //                 select.innerHTML = '';
+        //                 // Tạo các option mới từ dữ liệu trả về từ API và thêm chúng vào select
+        //                 topics.forEach(topic => {
+        //                     var option = document.createElement('option');
+        //                     option.text = topic.name;
+        //                     option.value = topic.id; // Lưu trữ ID của topic trong giá trị của option
+        //                     select.add(option);
+        //                 });
+        //                 document.getElementById('topicGroup').style.display = 'block';
+        //             } else {
+        //                 console.error('Error:', data.message);
+        //             }
+        //         })
+        //         .catch(error => {
+        //             console.error('Error:', error);
+        //         });
+
+        // });
+
+
+        // Thêm sự kiện change cho select skill
+        document.getElementById('skillSelect').addEventListener('change', function () {
+            if (this.selectedIndex === 0) { // Nếu option đầu tiên được chọn
+                loadTopics(); // Gọi hàm loadTopics để tải danh sách chủ đề
+            }
+            else {
+                loadTopics();
+            }
+        });
+
+        // Hàm tải danh sách chủ đề
+        function loadTopics() {
+            var selectedSkill = document.getElementById('skillSelect').selectedIndex + 1;
+            //alert(selectedSkill);// Lấy giá trị của kỹ năng được chọn
+            fetch(`api/topics/${selectedSkill}`) // Gọi API để lấy danh sách chủ đề dựa trên kỹ năng được chọn
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message === 'OK') {
+                        var topics = data.data;
+                        var topicSelect = document.getElementById('topicSelect');
+                        topicSelect.innerHTML = ''; // Xóa các option cũ
+                        topics.forEach(function (topic, index) {
+                            // Tạo một option mới
+                            var option = document.createElement('option');
+                            option.value = topic.id; // Giá trị của option là id của chủ đề
+                            option.textContent = topic.name; // Nội dung của option là tên của chủ đề
+                            option.setAttribute('data-index', index + 1); // Đặt thuộc tính data-index cho option là index + 1
+                            topicSelect.appendChild(option); // Thêm option vào select
+                        });
+                        document.getElementById('topicGroup').style.display = 'block'; // Hiển thị select chủ đề
+                    } else {
+                        console.error('Error:', data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+        loadTopics();
+    </script>
+</body>
+
+</html>

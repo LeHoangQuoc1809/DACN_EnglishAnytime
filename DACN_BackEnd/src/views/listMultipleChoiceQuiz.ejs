@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiple Choice Quizs</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
+
+<body>
+    <div class="topnav">
+        <a href="/">Users</a>
+        <a href="/skill">Skills</a>
+        <a href="/topic">Topics</a>
+        <a href="/lesson">Lessons</a>
+        <a href="/voiceQuiz">Voice Quizs</a>
+        <a class="active" href="/multipleChoiceQuiz">Multiple Choice Quizs</a>
+        <a href="/descriptionQuiz">Description Quizs</a>
+        <a href="/lettersIntoWordsQuiz">Letters Into Words Quizs</a>
+    </div>
+
+    <div class="tooltip">
+        <!-- Nút import -->
+        <label for="fileInput" class="import-btn-data">Import</label>
+        <!-- Input file ẩn để chọn tệp -->
+        <input type="file" id="fileInput" style="display: none" accept=".xlsx, .xls">
+        <!-- Tooltip -->
+        <pre class="tooltiptext">
+Import dữ liệu vào từ file excell, định dạng trong file như sau:
+Lưu ý: dòng đầu tiên chỉ là nhãn, không mang giá trị lưu trữ
+        </pre>
+        <div class="tooltip tooltip-imageMultipleQuiz">
+            <span class="tooltiptext"></span>
+        </div>
+    </div>
+    <div>
+        <a class="btnCreate" href="/create-multipleChoiceQuiz">Create A New Multiple Choi Quiz</a>
+    </div>
+    <div style="padding-top: 30px;" class="table-container">
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Word_1</th>
+                <th>Word_2</th>
+                <th>Word_3</th>
+                <th>Word_4</th>
+                <th>Meaning</th>
+                <th>Answer</th>
+                <!-- <th>Lesson_name</th>
+                <th>Actions</th> -->
+            </tr>
+            <% listMultipleChoiceQuiz.forEach(function(multipleChoiceQuiz, index) { %>
+                <tr>
+                    <td>
+                        <%= multipleChoiceQuiz.id %>
+                    </td>
+                    <td>
+                        <%= multipleChoiceQuiz.word_1 %>
+                    </td>
+                    <td>
+                        <%= multipleChoiceQuiz.word_2 %>
+                    </td>
+                    <td>
+                        <%= multipleChoiceQuiz.word_3 %>
+                    </td>
+                    <td>
+                        <%= multipleChoiceQuiz.word_4 %>
+                    </td>
+                    <td>
+                        <%= multipleChoiceQuiz.meaning %>
+                    </td>
+                    <td>
+                        <%= multipleChoiceQuiz.answer %>
+                    </td>
+                    <!-- <% listLessons.forEach(function(lesson, index) { %>
+                        <% if(lesson.id==multipleChoiceQuiz.lesson_id) { %>
+                            <td>
+                                <%= lesson.name %>
+                            </td>
+
+                            <% } %>
+                                <% }); %> -->
+                    <!-- <td>
+                        <div class="container_btn">
+                            <div class="btn">
+                                <a class="btnEdit" href="/update-normalQuiz/<%= multipleChoiceQuiz.id %>">Edit</a>
+                            </div>
+                            <div class="btn">
+                                <button class="btnDelete" data-id="<%= multipleChoiceQuiz.id %>">Delete</button>
+                            </div>
+                        </div>
+                    </td> -->
+                </tr>
+                <% }); %>
+        </table>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $(".btnDelete").click(function () {
+                const id = $(this).attr('data-id');
+                if (confirm(`Are you sure to delete this Voice Quiz with ID = ${id}`)) {
+                    $.ajax({
+                        url: `${window.location.origin}/api/delete-voiceQuiz/${id}`,
+                        method: "DELETE",
+                        success: (result) => {
+                            console.log(result);
+                            $(this).closest("tr").remove();
+                        },
+                        error: function (error) {
+                            alert(`Could not DELETE Voice Quiz with ID = ${id}`);
+                        }
+                    });
+                } else {
+                    // Do nothing!
+                }
+            });
+        });
+        $(document).ready(function () {
+            // Xử lý sự kiện khi người dùng chọn tệp Excel
+            $('#fileInput').change(function (e) {
+                var file = e.target.files[0];
+                if (file) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var data = new Uint8Array(e.target.result);
+                        var workbook = XLSX.read(data, { type: 'array' });
+                        var sheetName = workbook.SheetNames[0];
+                        var worksheet = workbook.Sheets[sheetName];
+                        var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+                        //alert(JSON.stringify({ data: jsonData }))
+                        // Gửi dữ liệu lên server
+                        $.ajax({
+                            url: '/api/create-MultipleChoiceQuiz',
+                            method: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({ data: jsonData }), // Dữ liệu từ tệp Excel
+                            success: function (response) {
+                                console.log(response);
+                                if (response.message === 'OK') {
+                                    alert('Thêm thành công!');
+                                }
+                                else if (response.message === 'Missing required params') {
+                                    alert('File excell đang sai định dạng');
+                                } else {
+                                    alert('Thêm thất bại!');
+                                }
+                                window.location.reload(true);
+                            },
+                            error: function (error) {
+                                console.error('Error:', error);
+                                alert('Thêm thất bại!');
+                                window.location.reload(true);
+                            }
+                        });
+                    };
+                    reader.readAsArrayBuffer(file);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update A Lesson</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<body>
+    <div class="topnav">
+        <a href="/">Users</a>
+        <a href="/skill">Skills</a>
+        <a href="/topic">Topics</a>
+        <a class="active" href="/lesson">Lessons</a>
+        <a href="/voiceQuiz">Voice Quizs</a>
+        <a href="/multipleChoiceQuiz">Multiple Choice Quizs</a>
+        <a href="/descriptionQuiz">Description Quizs</a>
+        <a href="/lettersIntoWordsQuiz">Letters Into Words Quizs</a>
+    </div>
+    <div class="form-add-new">
+        <form action="/update-lesson" method="POST">
+            <fieldset>
+                <legend>Update A Lesson</legend>
+                <div class="input-group d-none">
+                    <label>Id: </label>
+                    <input type="text" name="lessonId" value="<%= lessonUpdate.id %>" />
+                </div>
+                <div class="input-group">
+                    <label>Name: </label>
+                    <input type="text" name="name" value="<%= lessonUpdate.name %>" />
+                </div>
+                <!-- <div class="input-group">
+                    <label>Topic: </label>
+                    <select name="topic_name">
+                        <% listTopics.forEach(function(topic, index) { %>
+                            <% if(topic.id==lessonUpdate.topic_id) { %>
+                                <option selected="selected">
+                                    <%= topic.name %>
+                                </option>
+                                <% } else { %>
+                                    <option>
+                                        <%= topic.name %>
+                                    </option>
+                                    <% } %>
+                                        <% }); %>
+                    </select>
+                </div> -->
+
+                <div class="input-group">
+                    <button class="btnSave">Save</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</body>
+
+</html>

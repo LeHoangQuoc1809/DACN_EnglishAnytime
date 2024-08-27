@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lessons</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<body>
+    <div class="topnav">
+        <a href="/">Users</a>
+        <a href="/skill">Skills</a>
+        <a href="/topic">Topics</a>
+        <a class="active" href="/lesson">Lessons</a>
+        <a href="/voiceQuiz">Voice Quizs</a>
+        <a href="/multipleChoiceQuiz">Multiple Choice Quizs</a>
+        <a href="/descriptionQuiz">Description Quizs</a>
+        <a href="/lettersIntoWordsQuiz">Letters Into Words Quizs</a>
+    </div>
+
+    <div class="container mt-2 ml-0">
+        <!-- Tab Navigation -->
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="all-tab" data-toggle="tab" href="#all" role="tab" aria-controls="all"
+                    aria-selected="true"
+                    onclick="getLessonsBySkillId('all','<%= JSON.stringify(listTopics) %>')">All</a>
+            </li>
+            <% listSkills.forEach(function(skill) { %>
+                <li class="nav-item">
+                    <a class="nav-link" id="skill<%= skill.id %>-tab" data-toggle="tab" href="#skill<%= skill.id %>"
+                        role="tab" aria-controls="skill<%= skill.id %>" aria-selected="false"
+                        onclick="getLessonsBySkillId('<%= skill.id %>', '<%= JSON.stringify(listTopics) %>')">
+                        <%= skill.name %>
+                    </a>
+                </li>
+                <% }); %>
+        </ul>
+
+        <!-- Tab Content -->
+        <div class="tab-content px-2 pt-4" id="myTabContent">
+            <!-- Tab 1 Content Goes Here -->
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <div>
+                    <!-- Filter 1 -->
+                    <label for="filter1">Topic:</label>
+                    <select id="filter1"
+                        onchange="getLessonsByTopicIdAndSkillID(this.value,'<%= JSON.stringify(listTopics) %>')">
+                        <option value="all">All</option>
+                        <% listTopics.forEach(function(topic) { %>
+                            <option value="<%= topic.id %>">
+                                <%= topic.name %>
+                            </option>
+                            <% }); %>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div>
+        <a class="btnCreate" href="/create-lesson">Create A New Lesson</a>
+    </div>
+    <div class="table-container">
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Topic_name</th>
+                <th style="text-align: center;">Actions</th>
+            </tr>
+            <% listLessons.forEach(function(lesson, index) { %>
+                <tr>
+                    <td>
+                        <%= lesson.id %>
+                    </td>
+                    <td>
+                        <%= lesson.name %>
+                    </td>
+                    <% listTopics.forEach(function(topic, index) { %>
+                        <% if(topic.id==lesson.topic_id) { %>
+                            <td>
+                                <%= topic.name %>
+                            </td>
+
+                            <% } %>
+                                <% }); %>
+                                    <td style="width: 300px;">
+                                        <div class="container_btn">
+                                            <div class="btn">
+                                                <a class="btnEdit" href="/update-lesson/<%= lesson.id %>">Edit</a>
+                                            </div>
+                                            <div class="btn">
+                                                <button class="btnDelete" data-id="<%= lesson.id %>">Delete</button>
+                                            </div>
+                                        </div>
+                                    </td>
+                </tr>
+                <% }); %>
+        </table>
+    </div>
+
+    <script>
+        let skillIdCurrent = 'all';
+
+        function updateSelectValue(value) {
+            document.getElementById("filter1").value = value;
+        }
+
+        function getLessonsBySkillId(skillId, listTopicsJSON) {
+            skillIdCurrent = skillId;
+            let listTopics = JSON.parse(listTopicsJSON);
+            let url = 'api/getAllLessonsOfSkillId/' + skillId;
+            //alert(skillId);
+            if (skillId === 'all') {
+                url = 'api/getAllLessons';
+            }
+            // Gửi yêu cầu API để lấy danh sách bài học dựa trên skillId
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    // Xử lý dữ liệu trả về từ API
+                    if (data.message === 'OK') {
+                        // Lấy danh sách bài học từ dữ liệu trả về
+                        const lessons = data.data;
+                        //alert(JSON.stringify(lessons));
+                        // Cập nhật giao diện người dùng với danh sách bài học mới
+                        updateLessonList(lessons, listTopics);
+                        updateSelectValue('all');
+                    } else {
+                        // Xử lý trường hợp lỗi nếu cần
+                        console.error('Error:', data.message);
+                    }
+                })
+                .catch(error => {
+                    // Xử lý trường hợp lỗi kết nối
+                    console.error('Error:', error);
+                });
+        }
+
+        function getLessonsByTopicIdAndSkillID(topicId, listTopicsJSON) {
+            let listTopics = JSON.parse(listTopicsJSON);
+            //alert(skillIdCurrent);
+            let url
+            if (skillIdCurrent === 'all' && topicId === 'all') {
+                url = 'api/getAllLessons';
+            } else if (skillIdCurrent === 'all' && topicId !== 'all') {
+                url = 'api/getAllLessonsOfTopcId/' + topicId;
+            } else if (skillIdCurrent !== 'all' && topicId === 'all') {
+                url = 'api/getAllLessonsOfSkillId/' + skillIdCurrent;
+            } else {
+                url = 'api/lessons/' + topicId + '/' + skillIdCurrent;
+            }
+            //alert(url);
+            // Gửi yêu cầu API để lấy danh sách bài học dựa trên topicId
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    // Xử lý dữ liệu trả về từ API
+                    if (data.message === 'OK') {
+                        // Lấy danh sách bài học từ dữ liệu trả về
+                        const lessons = data.data;
+
+                        // Cập nhật giao diện người dùng với danh sách bài học mới
+                        updateLessonList(lessons, listTopics);
+                    } else {
+                        // Xử lý trường hợp lỗi nếu cần
+                        console.error('Error:', data.message);
+                    }
+                })
+                .catch(error => {
+                    // Xử lý trường hợp lỗi kết nối
+                    console.error('Error:', error);
+                });
+        }
+
+        function updateLessonList(lessons, listTopics) {
+            // Xác định vị trí của table-container để cập nhật giao diện
+            const tableContainer = document.querySelector('.table-container');
+            // Tạo biến lưu trữ HTML mới
+            let html = '<table>';
+            // Tạo header cho bảng
+            html += `<tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Topic_name</th>
+                        <th style="text-align: center;">Actions</th>
+                    </tr>`;
+            // Duyệt qua danh sách bài học và thêm từng bài học vào HTML
+            lessons.forEach(lesson => {
+                let topic_name = '';
+                let foundTopic = false;
+                listTopics.forEach(function (topic) {
+                    if (topic.id == lesson.topic_id) {
+                        topic_name = topic.name;
+                        foundTopic = true;
+                        return;
+                    }
+                });
+                if (!foundTopic) {
+                    console.log("Không tìm thấy chủ đề có id:", topicId);
+                } else {
+                    console.log("Tên chủ đề:", topic_name);
+                }
+                html += `<tr>
+                    <td>${lesson.id}</td>
+                    <td>${lesson.name}</td>
+                    <td>${topic_name}</td> 
+                    <td style="width: 300px">
+                        <div class="container_btn">
+                            <div class="btn"><a class="btnEdit" href="/update-lesson/${lesson.id}">Edit</a></div>
+                            <div class="btn"><button class="btnDelete" data-id="${lesson.id}">Delete</button></div>
+                        </div>
+                    </td>
+                </tr>`;
+            });
+            html += '</table>';
+            // Cập nhật HTML của table-container
+            tableContainer.innerHTML = html;
+        }
+
+        $(document).ready(function () {
+            document.addEventListener('click', function (event) {
+                if (event.target.matches('.btnDelete')) {
+                    const id = $(event.target).attr('data-id');
+                    if (confirm(`Are you sure to DELETE this LESSON with ID: ${id}`)) {
+                        $.ajax({
+                            url: `${window.location.origin}/api/delete-lesson/${id}`,
+                            method: "DELETE",
+                            success: (result) => {
+                                console.log(result);
+                                $(event.target).closest("tr").remove();
+                                alert(`Đã xóa LESSON với ID: ${id}`);
+                            },
+                            error: function (error) {
+                                alert(`Không thể xóa bài học vì đã tồn tại câu hỏi`);
+                            }
+                        });
+                    } else {
+                        // Do nothing!
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>
+
+
+<!-- Tab Navigation -->
+<!-- <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+                    aria-selected="true" onclick="getLessonsBySkillId('all')">All</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                    aria-controls="profile" aria-selected="false">Listening</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                    aria-controls="profile" aria-selected="false">Speaking</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                    aria-controls="profile" aria-selected="false">Reading</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                    aria-controls="profile" aria-selected="false">Writing</a>
+            </li>
+        </ul> -->

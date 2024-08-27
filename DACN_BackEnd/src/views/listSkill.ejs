@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skills</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<body>
+    <div class="topnav">
+        <a href="/">Users</a>
+        <a class="active" href="/skill">Skills</a>
+        <a href="/topic">Topics</a>
+        <a href="/lesson">Lessons</a>
+        <a href="/voiceQuiz">Voice Quizs</a>
+        <a href="/multipleChoiceQuiz">Multiple Choice Quizs</a>
+        <a href="/descriptionQuiz">Description Quizs</a>
+        <a href="/lettersIntoWordsQuiz">Letters Into Words Quizs</a>
+    </div>
+    <div class="table-container" style="display: flex; justify-content: center; align-items: center; height: 80vh;">
+        <table style="border-radius: 10xp; border: 1; width: 400px;">
+            <tr>
+                <th style="text-align: center;">ID</th>
+                <th style="text-align: center;">Name</th>
+            </tr>
+            <% listSkills.forEach(function(skill, index) { %>
+                <tr>
+                    <td style="text-align: center;">
+                        <%= skill.id %>
+                    </td>
+                    <td style="text-align: center;">
+                        <%= skill.name %>
+                    </td>
+                </tr>
+                <% }); %>
+        </table>
+    </div>
+</body>
+
+</html>

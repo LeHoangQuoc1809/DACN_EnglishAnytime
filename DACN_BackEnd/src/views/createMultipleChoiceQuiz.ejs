@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create A Multiple Choice Quiz</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<body>
+    <div class="topnav">
+        <a href="/">Users</a>
+        <a href="/skill">Skills</a>
+        <a href="/topic">Topics</a>
+        <a href="/lesson">Lessons</a>
+        <a href="/voiceQuiz">Voice Quizs</a>
+        <a class="active" href="/multipleChoiceQuiz">Multiple Choice Quizs</a>
+        <a href="/descriptionQuiz">Description Quizs</a>
+        <a href="/lettersIntoWordsQuiz">Letters Into Words Quizs</a>
+    </div>
+    <div class="form-add-new">
+        <form id="multipleChoiceForm" action="/create-multiple-choice-quiz" method="POST">
+            <fieldset>
+                <legend>Create Multiple Choice Quiz</legend>
+                <div class="input-group">
+                    <label>Word_1: </label>
+                    <input id="Word_1" style="margin-left: 6px; " type="text" name="word_1" />
+                </div>
+                <div class="input-group">
+                    <label>Word_2: </label>
+                    <input id="Word_2" style="margin-left: 6px; " type="text" name="word_2" />
+                </div>
+                <div class="input-group">
+                    <label>Word_3: </label>
+                    <input id="Word_3" style="margin-left: 6px; " type="text" name="word_3" />
+                </div>
+                <div class="input-group">
+                    <label>Word_4: </label>
+                    <input id="Word_4" style="margin-left: 6px; " type="text" name="word_4" />
+                </div>
+                <div class="input-group">
+                    <label>Meaning: </label>
+                    <input id="Meaning" type="text" name="meaning" />
+                </div>
+                <div class="input-group">
+                    <label>Answer: </label>
+                    <select style="margin-left: 7px; width: 166px;" name="answer">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <button style="height: 30px; width: 50px; margin-left: 43%;" class="btnSave">Save</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $(".btnSave").click(function () {
+                var Word_1 = $("#Word_1").val().trim();
+                var Word_2 = $("#Word_2").val().trim();
+                var Word_3 = $("#Word_3").val().trim();
+                var Word_4 = $("#Word_4").val().trim();
+                var Meaning = $("#Meaning").val().trim();
+                // Kiểm tra xem các trường có giá trị không
+                if (!Word_1 || !Word_2 || !Word_3 || !Word_4 || !Meaning
+                    || Word_1 === '' || Word_2 === '' || Word_3 === '' || Word_4 === '' || Meaning === '') {
+                    // Hiển thị cảnh báo nếu có trường trống
+                    alert("Hãy điền đầy đủ thông tin");
+                    return false; // Ngăn form gửi đi nếu có trường trống
+                } else {
+                    // Gửi form đi nếu các trường đã được điền đầy đủ
+                    $("#multipleChoiceForm").submit();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

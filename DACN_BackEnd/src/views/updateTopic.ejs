@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update A Topic</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<body>
+    <div class="topnav">
+        <a href="/">Users</a>
+        <a href="/skill">Skills</a>
+        <a class="active" href="/topic">Topics</a>
+        <a href="/lesson">Lessons</a>
+        <a href="/voiceQuiz">Voice Quizs</a>
+        <a href="/multipleChoiceQuiz">Multiple Choice Quizs</a>
+        <a href="/descriptionQuiz">Description Quizs</a>
+        <a href="/lettersIntoWordsQuiz">Letters Into Words Quizs</a>
+    </div>
+    <div class="form-add-new">
+        <form action="/update-topic" method="POST" enctype="multipart/form-data">
+            <fieldset>
+                <legend>Update A Topic</legend>
+                <div class="input-group d-none">
+                    <label>Id: </label>
+                    <input type="text" name="topicId" value="<%= topicUpdate.id %>" />
+                </div>
+                <div class="input-group">
+                    <label>Name: </label>
+                    <input type="text" name="name" value="<%= topicUpdate.name %>" />
+                </div>
+                <div class="input-group">
+                    <label>Photo: </label>
+                    <input type="file" name="topic" value="<%= topicUpdate.photo %>" />
+                </div>
+                <div id="oldImage">
+                    <h4>Old photo</h4>
+                    <img src="/images/topics/<%= topicUpdate.photo %>" alt="photo" width="150" height="150"
+                        style="border:2px solid black">
+                </div>
+                <div class="input-group">
+                    <button class="btnSave">Save</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<body>
+    <div class="topnav">
+        <a class="active" href="/">Users</a>
+        <a href="/skill">Skills</a>
+        <a href="/topic">Topics</a>
+        <a href="/lesson">Lessons</a>
+        <a href="/voiceQuiz">Voice Quizs</a>
+        <a href="/multipleChoiceQuiz">Multiple Choice Quizs</a>
+        <a href="/descriptionQuiz">Description Quizs</a>
+        <a href="/lettersIntoWordsQuiz">Letters Into Words Quizs</a>
+    </div>
+    <div style="padding-top: 30px;" class="table-container">
+        <table>
+            <tr>
+                <th>Email</th>
+                <th>Full Name</th>
+                <!-- <th>Password</th> -->
+                <th style="width: 300px; text-align: center;">Photo</th>
+            </tr>
+
+            <!-- <% for (let i=0; i < listUsers.length; i++) { %>
+                <tr>
+                    <td>
+                        <%= listUsers[i].id %>
+                    </td>
+                    <td>
+                        <%= listUsers[i].email %>
+                    </td>
+                    <td>
+                        <%= listUsers[i].name %>
+                    </td>
+                    <td>
+                        <%= listUsers[i].city %>
+                    </td>
+                    <td>
+                        <button>Edit</button>
+                        <button>Delete</button>
+                    </td>
+                </tr>
+                <% } %> -->
+
+            <% listUsers.forEach(function(user, index) { %>
+                <tr>
+                    <td>
+                        <%= user.email %>
+                    </td>
+                    <td>
+                        <%= user.full_name %>
+                    </td>
+                    <!-- <td>
+                        <%= user.password %>
+                    </td> -->
+                    <td style="width: 300px; text-align: center;">
+                        <!-- <% if (user.photo==='none' ) { %>
+                            <% user.photo +='.png' ; %>
+                                <% } %> -->
+                        <img src="/images/users/<%= user.photo %>" alt="photo" width="100" height="100"
+                            style="border:2px solid black">
+                    </td>
+                    <!-- <% if(user.gender) { %>
+                        <td>
+                            Nam
+                        </td>
+                        <% } else { %>
+                            <td>
+                                Nữ
+                            </td>
+                            <% } %>
+                                <td>
+                                    <% let objectDate=new Date(user.birthday); %>
+                                        <% let day=objectDate.getDate(); %>
+                                            <% let month=objectDate.getMonth()+1; %>
+                                                <% let year=objectDate.getFullYear(); %>
+                                                    <% let format=day + "/" + month + "/" + year; %>
+                                                        <%= format %>
+                                </td> -->
+
+                </tr>
+                <% }); %>
+        </table>
+    </div>
+</body>
+
+</html>

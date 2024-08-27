@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create A Topic</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<body>
+    <div class="topnav">
+        <a href="/">Users</a>
+        <a href="/skill">Skills</a>
+        <a class="active" href="/topic">Topics</a>
+        <a href="/lesson">Lessons</a>
+        <a href="/voiceQuiz">Voice Quizs</a>
+        <a href="/multipleChoiceQuiz">Multiple Choice Quizs</a>
+        <a href="/descriptionQuiz">Description Quizs</a>
+        <a href="/lettersIntoWordsQuiz">Letters Into Words Quizs</a>
+    </div>
+    <div class="form-add-new">
+        <form id="topicForm" action="/create-topic" enctype="multipart/form-data" method="POST">
+            <fieldset>
+                <legend style="width:max-content;">Create Topic</legend>
+                <div class="input-group">
+                    <label>Name: </label>
+                    <input id="name" type="text" name="name" />
+                </div>
+                <div id="skill" class="input-group skill-group">
+                    <label>Skill: </label>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="Listening" name="Listening" value="Listening">
+                        <label>Listening</label><br>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="Speaking" name="Speaking" value="Speaking">
+                        <label>Speaking</label><br>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="Reading" name="Reading" value="Reading">
+                        <label>Reading</label><br>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="Writing" name="Writing" value="Writing">
+                        <label>Writing</label><br>
+                    </div>
+                </div>
+                <div class="input-group-selectAll">
+                    <input type="checkbox" id="selectAll" name="selectAll" value="selectAll">
+                    <label for="selectAll"> Select all</label><br>
+                </div>
+                <div id="photo" class="input-group">
+                    <label>Photo: </label>
+                    <input type="file" name="topic" />
+                </div>
+                <div class="input-group">
+                    <button style="height: 30px; width: 50px; margin-left: 43%;" class=" btnSave">Save</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('selectAll').addEventListener('click', function () {
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(function (checkbox) {
+                checkbox.checked = this.checked;
+            }, this);
+        });
+        // $(document).ready(function () {
+        //     $(".btnSave").click(function () {
+        //         var name = $("#name").val();
+        //         // Lấy ra danh sách các file đã chọn trong trường photo
+        //         var files = $("#photo")[0].files;
+        //         // Kiểm tra xem ít nhất một checkbox đã được chọn hay không
+        //         // if ($("input[name='skill']:checked").length < 1) {
+        //         //     alert("Please select at least one skill.");
+        //         //     return false; // Ngăn form gửi đi nếu không có checkbox nào được chọn
+        //         // }
+        //         // Kiểm tra xem có ít nhất một file đã được chọn hay không
+        //         if (files.length === 0) {
+        //             alert("Please select a photo.");
+        //             return false; // Ngăn form gửi đi nếu không có file nào được chọn
+        //         }
+        //         // Kiểm tra xem các trường có giá trị không
+        //         // if (!name || $("input[name='skill']:checked").length === 0 || files.length === 0) {
+        //         //     // Hiển thị cảnh báo nếu có trường trống
+        //         //     alert("Hãy điền đầy đủ thông tin");
+        //         //     return false; // Ngăn form gửi đi nếu có trường trống
+        //         // } else {
+        //         //     // Gửi form đi nếu các trường đã được điền đầy đủ
+        //         //     $("#topicForm").submit();
+        //         // }
+        //     });
+        // });
+    </script>
+
+</body>
+
+</html>

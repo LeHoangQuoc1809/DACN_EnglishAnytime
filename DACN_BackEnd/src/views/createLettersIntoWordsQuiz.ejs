@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create A Letters Into Words Quiz</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<body>
+    <div class="topnav">
+        <a href="/">Users</a>
+        <a href="/skill">Skills</a>
+        <a href="/topic">Topics</a>
+        <a href="/lesson">Lessons</a>
+        <a href="/voiceQuiz">Voice Quizs</a>
+        <a href="/multipleChoiceQuiz">Multiple Choice Quizs</a>
+        <a href="/descriptionQuiz">Description Quizs</a>
+        <a class="active" href="/lettersIntoWordsQuiz">Letters Into Words Quizs</a>
+    </div>
+    <div class="form-add-new">
+        <form id="lettersIntoWordsQuizForm" action="/create-letters-into-words-quiz" method="POST">
+            <fieldset>
+                <legend>Create Letters Into Words Quiz</legend>
+                <div class="input-group">
+                    <label>Answer: </label>
+                    <input style="margin: 15px; " type="text" name="answer" id="answer" />
+                </div>
+                <div class="input-group">
+                    <label>Meaning: </label>
+                    <input style="margin: 8px; " type="text" name="meaning" id="meaning" />
+                </div>
+                <div class="input-group">
+                    <button style="height: 30px; width: 50px; margin-left: 43%;" class="btnSave">Save</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $(".btnSave").click(function () {
+                var answer = $("#answer").val().trim();
+                var meaning = $("#meaning").val().trim();
+                // Kiểm tra xem các trường có giá trị không
+                if (!answer || !meaning || answer === '' || meaning === '') {
+                    // Hiển thị cảnh báo nếu có trường trống
+                    alert("Hãy điền đầy đủ thông tin");
+                    return false; // Ngăn form gửi đi nếu có trường trống
+                } else {
+                    // Gửi form đi nếu các trường đã được điền đầy đủ
+                    $("#lettersIntoWordsQuizForm").submit();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
